@@ -1,0 +1,36 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '15'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    runtimeOnly project(':frontend')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.20'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task copyWebApp(type: Copy) {
+    println "$rootDir"
+    from "$rootDir/frontend/build/"
+    into "$buildDir/resources/main/static"
+}
+bootJar.dependsOn(copyWebApp)
+compileJava.dependsOn ":frontend:build"
