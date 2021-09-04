@@ -2,6 +2,7 @@ apply plugin: "com.moowork.node"
 apply plugin: 'base'
 
 task appNpmBuild(type: NpmTask) {
+	workingDir = file("$buildDir")
 	args = ["run", "build"]
 }
 
