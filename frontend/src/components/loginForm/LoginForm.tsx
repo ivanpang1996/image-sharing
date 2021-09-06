@@ -1,30 +1,21 @@
 import React from 'react';
-import {Card, Col, Form, Row} from 'react-bootstrap';
+import {Form} from 'react-bootstrap';
 
 function LoginForm() {
     return (
-        // TODO: center card
-        <Card>
+        <div className="d-flex justify-content-center">
             <Form>
-                <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formPlaintextEmail">
-                    <Form.Label column sm="2">
-                        Email
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control plaintext readOnly defaultValue="email@example.com"/>
-                    </Col>
+                <Form.Group className="mb-3" controlId="formGroupEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter email"/>
                 </Form.Group>
-
-                <Form.Group as={Row} className="mb-3 justify-content-center" controlId="formPlaintextPassword">
-                    <Form.Label column sm="2">
-                        Password
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="password" placeholder="Password"/>
-                    </Col>
+                <Form.Group className="mb-3" controlId="formGroupPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password"/>
                 </Form.Group>
             </Form>
-        </Card>
+
+        </div>
     );
 }
 

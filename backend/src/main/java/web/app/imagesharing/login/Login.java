@@ -6,7 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Login {
     @GetMapping("/api/login")
-    public String login() {
-        return "Success!!";
+    public LoginResponse login() {
+        var response = new LoginResponse();
+        response.aaa = "successsss";
+        return response;
+    }
+
+    static class LoginResponse {
+        public String aaa;
     }
 }
