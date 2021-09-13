@@ -14,12 +14,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final PasswordEncoder encoder;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder encoder) {
-        this.encoder = encoder;
-    }
+    PasswordEncoder encoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/api/**", "/manifest.json" ,"/static/**","/images/**").permitAll()
+                .antMatchers("/", "/api/**", "/manifest.json", "/static/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -50,5 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("ivanpang1996@gmail.com").password(encoder.encode("admin")).roles("USER");
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
 
 }

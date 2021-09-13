@@ -12,16 +12,8 @@ function LoginForm() {
         bodyFormData.append('username', event.currentTarget.username.value);
         bodyFormData.append('password', event.currentTarget.password.value);
 
-        axios.post("/api/login", bodyFormData,
-            {
-            headers: {
-                "X-CSRFToken": cookie.get('XSRF-TOKEN'),
-                "Content-Type": "application/x-www-form-urlencoded",
-                "cache-control": "no-cache"
-            }
-        }
-        )
-            .then(res => alert(res.data.message))
+        axios.post("/api/login", bodyFormData)
+            .then(res => alert(res.headers.get('Location')));
     }
 
     return (
