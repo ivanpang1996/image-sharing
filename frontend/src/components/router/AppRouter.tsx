@@ -5,25 +5,17 @@ import Contact from "../contact/Contact";
 import Home from "../../pages/home/Home";
 import NotFound from "../notFound/404";
 import Login from "../../pages/login/Login";
+import Logout from "../../pages/logout/Logout";
 
 function AppRouter() {
     return (
         <div>
             <Switch>
-                <Route path="/login">
-                    <Login/>
-                </Route>
-                <Route path="/about">
-                    <About/>
-                </Route>
-
-                <Route path="/contact/:id">
-                    <Contact/>
-                </Route>
-
-                <Route exact path="/">
-                    <Home/>
-                </Route>
+                <Route path="/login" component={Login}/>
+                <Route path="/logout" component={Logout}/>
+                <Route path="/about" component={About}/>
+                <Route path="/contact/:id" component={Contact}/>
+                <Route exact path="/" component={Home}/>
 
                 {/*/!* If none of the previous routes render anything,*/}
                 {/*  this route acts as a fallback.*/}
@@ -31,9 +23,7 @@ function AppRouter() {
                 {/*  Important: A route with path="/" will *always* match*/}
                 {/*  the URL because all URLs begin with a /. So that's*/}
                 {/*  why we put this one last of all *!/*/}
-                <Route path="/">
-                    <NotFound/>
-                </Route>
+                <Route path="/" component={NotFound}/>
             </Switch>
         </div>
     );

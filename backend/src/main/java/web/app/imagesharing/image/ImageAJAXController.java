@@ -17,7 +17,7 @@ public class ImageAJAXController {
 
     private static final int PAGE_SIZE = 10;
 
-    @GetMapping("/images")
+    @GetMapping("/api/images")
     public SearchImageAJAXResponse listImages(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex) {
         System.out.println(pageIndex);
         int skip = (pageIndex - 1) * PAGE_SIZE;

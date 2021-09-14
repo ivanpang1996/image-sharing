@@ -1,9 +1,9 @@
 import React from 'react';
 import {Button, Form} from 'react-bootstrap';
 import axios from "axios";
-import cookie from 'js-cookie'
-
+import {useSelector} from "react-redux";
 function LoginForm() {
+    // const isLoggedIn = useSelector(reduxState => reduxState.isLoggedIn);
 
     const login = (event: React.FormEvent<HTMLFormElement>) => {
         alert("clicked")
@@ -13,7 +13,9 @@ function LoginForm() {
         bodyFormData.append('password', event.currentTarget.password.value);
 
         axios.post("/api/login", bodyFormData)
-            .then(res => alert(res.headers.get('Location')));
+            .then(res => {
+                alert();
+            });
     }
 
     return (
