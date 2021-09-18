@@ -4,20 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router} from 'react-router-dom';
 import AppRouter from "./components/router/AppRouter";
-import {compose, createStore} from "redux"
-import {Reducers} from "./reducers"
-import {Provider} from "react-redux";
-
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore(Reducers, composeEnhancers());
+import {UserProvider} from "./context/UserContext";
 
 ReactDOM.render(
-    <Provider store={store}>
+    <UserProvider>
         <Router>
             <AppRouter/>
         </Router>
-    </Provider>,
+    </UserProvider>,
     document.getElementById('root')
 );
 

@@ -1,6 +1,4 @@
 import React from 'react';
-import NavigationBar from "../../components/navbar/NavigationBar";
-import LoginForm from "../../components/loginForm/LoginForm";
 import axios from "axios";
 import {Button, Form} from "react-bootstrap";
 
@@ -10,7 +8,9 @@ function Logout() {
         alert("clicked")
         event.preventDefault();
         axios.post("/api/logout")
-            .then(res => alert("logged out"));
+            .then(() => {
+                localStorage.removeItem("isLoggedIn")
+            });
     }
 
     return (

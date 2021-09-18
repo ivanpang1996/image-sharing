@@ -1,13 +1,10 @@
 import React from 'react';
-import {Container, Nav, Navbar, NavDropdown} from 'react-bootstrap';
-import {useSelector} from "react-redux";
-import {RootState} from "../../reducers";
+import {Container, Nav, Navbar} from 'react-bootstrap';
+import {useUser} from "../../context/UserContext";
 
 
 function NavigationBar() {
-    const isLoggedIn = useSelector((state: RootState) => {
-        return state.isLoggedIn;
-    });
+    const userContext = useUser();
 
     return (
         <Navbar>
@@ -17,7 +14,8 @@ function NavigationBar() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto"/>
                     <Nav>
-                        {isLoggedIn ? <Nav.Link eventKey={2} href="/logout">Logout</Nav.Link> : <Nav.Link eventKey={2} href="/login">Login</Nav.Link>}
+                        {userContext.user === null ? <Nav.Link eventKey={2} href="/login">Login</Nav.Link> :
+                            <Nav.Link eventKey={2} href="/logout">Logout</Nav.Link>}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

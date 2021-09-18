@@ -29,6 +29,11 @@ public class ImageAJAXController {
         return response;
     }
 
+    @GetMapping("/abc")
+    public String abc() {
+        return "";
+    }
+
     private List<SearchImageAJAXResponse.Image> images(List<SearchImageResponse.Image> images) {
         return images.stream().map(image -> {
             var view = new SearchImageAJAXResponse.Image();
