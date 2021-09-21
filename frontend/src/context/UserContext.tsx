@@ -11,13 +11,13 @@ interface UserContext {
 
 const UserContext = createContext<UserContext>({user: null});
 
-export const UserProvider = ({children} : {children : React.ReactNode}) => {
+export const UserProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
-        axios.get("/abc").then((res) => {
+        axios.get("/api/user-info").then((res) => {
             if (res.data === "") {
-                setUser({email: "djdiw"});
+                setUser({email: res.data.email});
             } else {
                 setUser(null);
             }

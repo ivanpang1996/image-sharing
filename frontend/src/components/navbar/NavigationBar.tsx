@@ -14,8 +14,14 @@ function NavigationBar() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto"/>
                     <Nav>
-                        {userContext.user === null ? <Nav.Link eventKey={2} href="/login">Login</Nav.Link> :
-                            <Nav.Link eventKey={2} href="/logout">Logout</Nav.Link>}
+                        {userContext.user === null ?
+                            <>
+                                <Nav.Link eventKey={2} href="/signup">Signup</Nav.Link>
+                                <Nav.Link eventKey={2} href="/login">Login</Nav.Link>
+                            </> :
+                            <span>Hi {userContext.user.email}<Nav.Link eventKey={2}
+                                                                       href="/logout">Logout</Nav.Link></span>
+                        }
                     </Nav>
                 </Navbar.Collapse>
             </Container>
