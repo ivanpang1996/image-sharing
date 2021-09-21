@@ -16,7 +16,7 @@ export const UserProvider = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         axios.get("/api/user-info").then((res) => {
-            if (res.data === "") {
+            if (res.data.email) {
                 setUser({email: res.data.email});
             } else {
                 setUser(null);

@@ -43,6 +43,7 @@ public class UserAJAXController {
 
         if (userRepository.findByName(request.username).isPresent()) {
             response.success = false;
+            response.errorCode = SignUpAJAXResponse.ErrorCode.USER_EXIST;
             return response;
         }
 
