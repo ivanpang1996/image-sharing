@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import axios from "axios";
 
 function Main() {
     const [error, setError] = useState(null);
@@ -9,18 +10,16 @@ function Main() {
     // this useEffect will run once
     // similar to componentDidMount()
     useEffect(() => {
-        fetch("http://localhost:8080/api/images?pageIndex=1")
-            .then(res => res.json())
-            .then(
-                (response) => {
+        axios.get("/api/images?pageIndex=1")
+            .then((res) => {
+                if (res.data.images) {
                     setIsLoaded(true);
-                    setItems(response.images);
-                },
-                (error) => {
+                    setItems(res.data.images);
+                } else {
                     setIsLoaded(true);
-                    setError(error);
+                    alert("error")
                 }
-            )
+            });
     }, [])
 
     if (error) {

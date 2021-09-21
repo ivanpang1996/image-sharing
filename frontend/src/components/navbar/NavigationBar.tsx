@@ -1,31 +1,62 @@
-import React from 'react';
-import {Container, Nav, Navbar} from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Button, Container, Form, Modal, Nav, Navbar} from 'react-bootstrap';
 import {useUser} from "../../context/UserContext";
+import axios from "axios";
 
 
 function NavigationBar() {
     const userContext = useUser();
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const logout = (event: React.FormEvent<HTMLFormElement>) => {
+        alert("clicked")
+        event.preventDefault();
+        axios.post("/api/logout")
+            .then(() => {
+                window.location.href = '/';
+            });
+    }
 
     return (
-        <Navbar>
-            <Container>
-                <Navbar.Brand href="/">InstaPic</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto"/>
-                    <Nav>
-                        {userContext.user === null ?
-                            <>
-                                <Nav.Link eventKey={2} href="/signup">Signup</Nav.Link>
-                                <Nav.Link eventKey={2} href="/login">Login</Nav.Link>
-                            </> :
-                            <span>Hi {userContext.user.email}<Nav.Link eventKey={2}
-                                                                       href="/logout">Logout</Nav.Link></span>
-                        }
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <>
+            <Navbar>
+                <Container>
+                    <Navbar.Brand href="/">InstaPic</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="me-auto"/>
+                        <Nav>
+                            {userContext.user === null ?
+                                <>
+                                    <Nav.Link eventKey={2} href="/signup">Signup</Nav.Link>
+                                    <Nav.Link eventKey={2} href="/login">Login</Nav.Link>
+                                </> :
+                                <span>Hi {userContext.user.email}<Nav.Link eventKey={2}
+                                                                           onClick={handleShow}>Logout</Nav.Link></span>
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header>
+                    <Modal.Title>Logout</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure?</Modal.Body>
+                <Modal.Footer>
+                    <Form method="post" onSubmit={logout}>
+                        <Button variant="primary" type="submit">
+                            Yes
+                        </Button>
+                    </Form>
+                    <Button variant="secondary" onClick={handleClose}>
+                        No
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 }
 
