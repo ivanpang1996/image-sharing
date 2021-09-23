@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 public class Image {
     @Id
     @Column(length = 64)
-    public String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Long id;
 
     @Column(nullable = false)
     public String author;

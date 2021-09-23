@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import web.app.imagesharing.image.domain.Image;
 import web.app.imagesharing.image.repository.ImageRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,18 @@ public class ImageService {
         var response = new SearchImageResponse();
         response.images = images(images);
         response.totalRecords = (int) imageRepository.count();
+        return response;
+    }
+
+    public UploadImageResponse upload(UploadImageRequest request) {
+        var image = new Image();
+        image.author = request.author;
+        image.imageURL = request.imageURL;
+        image.caption = request.caption;
+        image.createdTime = LocalDateTime.now();
+        imageRepository.save(image);
+        var response = new UploadImageResponse();
+        response.success = true;
         return response;
     }
 

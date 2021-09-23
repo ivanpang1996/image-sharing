@@ -1,12 +1,12 @@
 import React from 'react';
 import NavigationBar from "../../components/navbar/NavigationBar";
-import Main from "../../components/main/main";
+import Index from "../../components/main/index";
 
 function Home() {
     return (
         <>
             <NavigationBar/>
-            <Main/>
+            <Index/>
         </>
     );
 }
