@@ -19,14 +19,14 @@ public class ImageAJAXController {
     @Autowired
     ImageService imageService;
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 1;
 
     @GetMapping("/api/images")
     public SearchImageAJAXResponse listImages(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex) {
-        System.out.println(pageIndex);
+        var response = new SearchImageAJAXResponse();
+        if (pageIndex < 1) return response;
         int skip = (pageIndex - 1) * PAGE_SIZE;
         SearchImageResponse searchImageResponse = imageService.listImages(skip, PAGE_SIZE);
-        var response = new SearchImageAJAXResponse();
         response.images = images(searchImageResponse.images);
         response.totalPages = (int) Math.ceil(searchImageResponse.totalRecords / (double) PAGE_SIZE);
         response.totalRecords = searchImageResponse.totalRecords;
