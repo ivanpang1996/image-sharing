@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/signup", "/api/signup", "/manifest.json", "/static/**", "/images/**").permitAll()
+                .antMatchers("/", "/signup", "/api/signup", "/api/login-error", "/manifest.json", "/static/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -35,20 +35,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/api/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/dasasadasdasf", true)
+                .failureForwardUrl("/api/login-error")
+                .defaultSuccessUrl("/api/login-success", true)
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/api/logout")
                 .permitAll();
     }
-
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .inMemoryAuthentication()
-//                .withUser("ivanpang1996@gmail.com").password(encoder.encode("admin")).roles("USER");
-//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

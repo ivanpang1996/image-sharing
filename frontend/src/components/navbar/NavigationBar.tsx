@@ -11,7 +11,6 @@ function NavigationBar() {
     const handleShow = () => setShow(true);
 
     const logout = (event: React.FormEvent<HTMLFormElement>) => {
-        alert("clicked")
         event.preventDefault();
         axios.post("/api/logout")
             .then(() => {
@@ -33,8 +32,8 @@ function NavigationBar() {
                                     <Nav.Link eventKey={2} href="/signup">Sign Up</Nav.Link>
                                     <Nav.Link eventKey={2} href="/login">Login</Nav.Link>
                                 </> :
-                                <span>Hi {userContext.user.email}<Nav.Link eventKey={2}
-                                                                           onClick={handleShow}>Logout</Nav.Link></span>
+                                <Nav.Link eventKey={2} onClick={handleShow}> Hi {userContext.user.email},
+                                    Logout</Nav.Link>
                             }
                         </Nav>
                     </Navbar.Collapse>
