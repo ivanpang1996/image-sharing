@@ -36,14 +36,18 @@ function SignupForm() {
 
     return (
         <>
-            {show ?
-                <Alert variant="danger" onClose={() => setShow(false)} >
-                    <Alert.Heading>Oops!</Alert.Heading>
-                    <p>
-                        {errorMsg}
-                    </p>
-                </Alert> : <></>
-            }
+            <div className="d-flex justify-content-center">
+                <h5>Sign Up</h5>
+
+                {show ?
+                    <Alert variant="danger" onClose={() => setShow(false)}>
+                        <Alert.Heading>Oops!</Alert.Heading>
+                        <p>
+                            {errorMsg}
+                        </p>
+                    </Alert> : <></>
+                }
+            </div>
             <div className="d-flex justify-content-center">
                 <Form method="post" onSubmit={onSubmit}>
                     <Form.Group className="mb-3" controlId="formGroupEmail">
