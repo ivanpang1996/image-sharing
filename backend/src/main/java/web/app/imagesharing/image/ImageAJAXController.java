@@ -19,7 +19,7 @@ public class ImageAJAXController {
     @Autowired
     ImageService imageService;
 
-    private static final int PAGE_SIZE = 1;
+    private static final int PAGE_SIZE = 10;
 
     @GetMapping("/api/images")
     public SearchImageAJAXResponse listImages(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex) {

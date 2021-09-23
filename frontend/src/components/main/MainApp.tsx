@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import AppPagination from "./Pagination";
+import Detail from "./Detail";
+import { BsEye } from "react-icons/bs";
 
 interface Item {
     imageURL: string
@@ -14,7 +16,12 @@ interface Props {
     currentPage: number
 }
 
+
 function MainApp({items, totalPages, currentPage}: Props) {
+    const [show, setShow] = useState(false);
+    const [viewItem, setViewItem] = useState<Item>({imageURL: "", author: "", caption: ""});
+    const handleClose = () => setShow(false);
+
     return (
         <>
             <Container className="p-3">
@@ -48,7 +55,10 @@ function MainApp({items, totalPages, currentPage}: Props) {
                                             <Card.Text>
                                                 {item.caption}
                                             </Card.Text>
-                                            <Button variant="primary"><i className=""></i></Button>
+                                            <Button variant="primary" onClick={() => {
+                                                setViewItem(item);
+                                                setShow(true);
+                                            }}><BsEye/></Button>
                                         </Card.Body>
                                     </Card>
                                 </Col>
@@ -63,6 +73,8 @@ function MainApp({items, totalPages, currentPage}: Props) {
                     </Container>
                 }
             </Container>
+            <Detail author={viewItem.author} caption={viewItem.caption} imageURL={viewItem.imageURL}
+                    handleClose={handleClose} show={show}/>
         </>
     );
 
