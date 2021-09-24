@@ -6,11 +6,10 @@ import javax.persistence.*;
 public class User {
     public User() {}
 
-    public User(String id, String name, String password, String defaultAddress, UserType type) {
+    public User(String id, String name, String password, UserType type) {
         this.id = id;
         this.name = name;
         this.password = password;
-        this.defaultAddress = defaultAddress;
         this.type = type;
     }
 
@@ -22,9 +21,6 @@ public class User {
 
     @Column(nullable = false)
     public String password;
-
-    @Column
-    public String defaultAddress;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

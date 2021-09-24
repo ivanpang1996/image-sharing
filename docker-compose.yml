@@ -1,27 +1,22 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-
 version: '3.7'
 
-# Define services
 services:
   # App backend service
   app-server:
-    # Configuration for building the docker image for the backend service
     image: image-sharing:latest
     ports:
-      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+      - "8080:8080"
     restart: always
     depends_on:
-      - db # This service depends on mysql. Start that first.
-    environment: # Pass environment variables to the service
+      - db
+    environment:
       DATABASE_HOST: db
       DATABASE: db
       DATABASE_USER: app
       DATABASE_PASSWORD: app123
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+    networks:
       - backend
 
-  # Database Service (Mysql)
   db:
     image: mysql:latest
     ports:
@@ -37,10 +32,8 @@ services:
     networks:
       - backend
 
-# Volumes
 volumes:
   db-data:
 
-# Networks to be created to facilitate communication between containers
 networks:
   backend:

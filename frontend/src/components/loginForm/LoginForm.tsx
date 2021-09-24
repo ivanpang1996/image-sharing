@@ -20,12 +20,11 @@ function LoginForm() {
         bodyFormData.append('password', data.password);
         axios.post("/api/login", bodyFormData)
             .then((res) => {
-                console.log(res)
-                if (res.request.responseURL !== "http://localhost:8080/api/login-success") {
+                if (res.request.responseURL.includes("/api/login-success")) {
+                    window.location.href = '/';
+                } else {
                     setErrorMsg("The username or password is incorrect. Please try again.")
                     setShow(true);
-                } else {
-                    window.location.href = '/';
                 }
             }).catch(() => {
             setErrorMsg("Something went wrong x_x")

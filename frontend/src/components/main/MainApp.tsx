@@ -3,6 +3,8 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import AppPagination from "./Pagination";
 import Detail from "./Detail";
 import { BsEye } from "react-icons/bs";
+import {useForm} from "react-hook-form";
+import axios from "axios";
 
 interface Item {
     imageURL: string
@@ -16,11 +18,33 @@ interface Props {
     currentPage: number
 }
 
+type FormData = {
+    caption: string;
+    image: any;
+};
+
+
 
 function MainApp({items, totalPages, currentPage}: Props) {
     const [show, setShow] = useState(false);
     const [viewItem, setViewItem] = useState<Item>({imageURL: "", author: "", caption: ""});
+    const {register, setValue, handleSubmit, formState: {errors}} = useForm<FormData>();
     const handleClose = () => setShow(false);
+
+    const onSubmit = handleSubmit(data => {
+        axios.post("/api/image", data, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        })
+            .then((res) => {
+                if (res.data.success) {
+                    alert("success")
+                } else {
+                    console.log(res)
+                }
+            });
+    });
 
     return (
         <>
@@ -28,13 +52,12 @@ function MainApp({items, totalPages, currentPage}: Props) {
                 <Card>
                     <Card.Header as="h5">What is in your mind?</Card.Header>
                     <Card.Body>
-                        <Form method="post">
+                        <Form method="post" onSubmit={onSubmit}>
                             <Form.Group className="mb-3" controlId="formGroupPassword">
-                                <Form.Control type="text" placeholder="Any caption?"/>
+                                <Form.Control type="text" {...register("caption")} placeholder="Any caption?"/>
                             </Form.Group>
-                            {/*TODO: upload to s3*/}
                             <Form.Group controlId="formFile" className="mb-3">
-                                <Form.Control type="file"/>
+                                <Form.Control type="file" {...register("image")}/>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
