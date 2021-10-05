@@ -1,13 +1,17 @@
 package web.app.imagesharing.image;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import web.app.imagesharing.image.service.ImageService;
 import web.app.imagesharing.image.service.SearchImageResponse;
@@ -44,13 +48,12 @@ public class ImageAJAXController {
     }
 
     @PostMapping("/api/image")
-    //TODO: not done yet
     public UploadImageAJAXResponse upload(@RequestParam("image") MultipartFile file, @RequestParam("caption") String caption) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) auth.getPrincipal();
         var uploadRequest = new UploadImageRequest();
         var response = new UploadImageAJAXResponse();
-        String url = uploadFileToS3(UUID.randomUUID().toString(), file);
+        String url = uploadFileToS3(UUID.randomUUID() + "." + StringUtils.getFilenameExtension(file.getOriginalFilename()), file);
         if (url == null) {
             response.success = false;
             return response;
@@ -68,7 +71,8 @@ public class ImageAJAXController {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             amazonS3Client.putObject(bucketName, keyName, file.getInputStream(), metadata);
-            return "File uploaded: " + keyName;
+            amazonS3Client.setObjectAcl(bucketName, keyName, CannedAccessControlList.PublicRead);
+            return amazonS3Client.getUrl(bucketName, keyName).toString();
         } catch (Exception e) {
             return null;
         }
@@ -83,9 +87,5 @@ public class ImageAJAXController {
             view.createdTime = image.createdTime;
             return view;
         }).collect(Collectors.toList());
-    }
-
-    private boolean isLoggedIn(Authentication auth) {
-        return (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken));
     }
 }

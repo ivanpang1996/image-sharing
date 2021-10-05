@@ -14,6 +14,7 @@ services:
       DATABASE: db
       DATABASE_USER: app
       DATABASE_PASSWORD: app123
+      S3_BUCKET: bucket_name
     networks:
       - backend
 

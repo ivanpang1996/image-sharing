@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import AppPagination from "./Pagination";
 import Detail from "./Detail";
-import { BsEye } from "react-icons/bs";
+import {BsEye} from "react-icons/bs";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 
@@ -18,30 +18,33 @@ interface Props {
     currentPage: number
 }
 
-type FormData = {
-    caption: string;
+type Data = {
     image: any;
+    caption: string;
 };
-
 
 
 function MainApp({items, totalPages, currentPage}: Props) {
     const [show, setShow] = useState(false);
     const [viewItem, setViewItem] = useState<Item>({imageURL: "", author: "", caption: ""});
-    const {register, setValue, handleSubmit, formState: {errors}} = useForm<FormData>();
+    const {register, setValue, handleSubmit, formState: {errors}} = useForm<Data>();
     const handleClose = () => setShow(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [showErr, setShowErr] = useState(false);
 
     const onSubmit = handleSubmit(data => {
-        axios.post("/api/image", data, {
-            headers: {
-                'content-type': 'multipart/form-data'
-            }
-        })
+        const formData = new FormData();
+        formData.append('image', data.image[0]);
+        formData.append('caption', data.caption)
+        const config = {headers: {'Content-Type': 'multipart/form-data'}};
+        axios.post("/api/image", formData, config)
             .then((res) => {
                 if (res.data.success) {
-                    alert("success")
+                    alert("success");
+                    window.location.reload()
                 } else {
-                    console.log(res)
+                    setShowErr(true)
+                    setErrorMsg("Something went wrong x_x")
                 }
             });
     });
@@ -49,6 +52,16 @@ function MainApp({items, totalPages, currentPage}: Props) {
     return (
         <>
             <Container className="p-3">
+
+                {showErr ?
+                    <Alert variant="danger" onClose={() => setShow(false)}>
+                        <Alert.Heading>Oops!</Alert.Heading>
+                        <p>
+                            {errorMsg}
+                        </p>
+                    </Alert> : <></>
+                }
+
                 <Card>
                     <Card.Header as="h5">What is in your mind?</Card.Header>
                     <Card.Body>
@@ -57,7 +70,7 @@ function MainApp({items, totalPages, currentPage}: Props) {
                                 <Form.Control type="text" {...register("caption")} placeholder="Any caption?"/>
                             </Form.Group>
                             <Form.Group controlId="formFile" className="mb-3">
-                                <Form.Control type="file" {...register("image")}/>
+                                <Form.Control type="file" {...register("image")} accept="image/png, image/jpeg"/>
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Submit
