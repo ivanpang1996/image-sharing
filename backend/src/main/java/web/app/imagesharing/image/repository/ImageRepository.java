@@ -8,6 +8,6 @@ import web.app.imagesharing.image.domain.Image;
 import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, String> {
-    @Query(nativeQuery = true, value = "select * from image limit :skip, :limit")
+    @Query(nativeQuery = true, value = "select * from image order by created_time DESC limit :skip, :limit")
     List<Image> search(@Param("skip") int skip, @Param("limit") int limit);
 }

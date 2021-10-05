@@ -33,7 +33,7 @@ public class ImageAJAXController {
     @Value("${application.bucket.name}")
     private String bucketName;
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 8;
 
     @GetMapping("/api/images")
     public SearchImageAJAXResponse listImages(@RequestParam(value = "pageIndex", defaultValue = "1") int pageIndex) {
